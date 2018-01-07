@@ -166,6 +166,18 @@ public class LevelProgressBar extends ProgressBar {
         // 渐变色起始坐标 颜色 渐变色终止坐标和颜色 图像超出原始边界时的呈现方式
         Shader shader = new LinearGradient(0, lineY, getWidth(), lineY, progressStartColor, progressEndColor, Shader.TileMode.CLAMP);
         mPaint.setShader(shader);
+
+        /** progress为0时 渐变色会出现 初步认为是accurateStatr > reachedPartEnd 所以出现在负方向(但原因应该不是这个)
+        int accurateEnd = reachedPartEnd - progressHeight / 2;
+        int accurateStart = progressHeight / 2;
+        if (accurateEnd > accurateStart) {
+            canvas.drawLine(accurateStart, lineY, reachedPartEnd, lineY, mPaint);
+        } else {
+            canvas.drawLine(accurateStart, lineY, reachedPartEnd, lineY, mPaint);
+        }
+         */
+
+//        /** myselfchange
         if (reachedPartEnd>0) {
             canvas.drawLine(progressHeight/2,lineY,reachedPartEnd,lineY,mPaint);
         }
@@ -174,6 +186,7 @@ public class LevelProgressBar extends ProgressBar {
             canvas.drawLine(progressHeight/2, lineY, reachedPartEnd - progressHeight/2, lineY, mPaint);    // - progressHeight/2
             // 当reachedParEnd小于progressHeight/2时会为负数
         }
+//        */
         /** 原作者修改代码 但体验不够
         int accurateEnd = reachedPartEnd - progressHeight / 2;
         int accurateStart = 0 + progressHeight / 2;
