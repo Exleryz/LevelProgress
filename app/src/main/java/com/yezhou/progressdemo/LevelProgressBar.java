@@ -53,7 +53,7 @@ public class LevelProgressBar extends ProgressBar {
             int progress = getProgress();
             // 小于目标值时增加进度，大于目标值时减小进度
             if (progress < targetProgress) {
-                Log.d("admin_progress", getProgress()+ "ppb");
+//                Log.d("admin_progress", getProgress()+ "ppb");
                 setProgress(++progress);    // 设置进度值 先加再赋值
 //                Log.d("admin_progress", progress + "cp");
 //                Log.d("admin_progress", getProgress()+ "ppa");
@@ -139,7 +139,7 @@ public class LevelProgressBar extends ProgressBar {
 //            Log.d("admin_draw_level", targetProgress + "tp");    // 变为对应等级的进度
 //            Log.d("admin_draw_level", getProgress() + "p");
             // 到达指定等级时 变色
-            Log.d("admin_draw_level", (getProgress() / unitLevelProgress )+"  " + getProgress() + "  " + unitLevelProgress);
+//            Log.d("admin_draw_level", (getProgress() / unitLevelProgress )+"  " + getProgress() + "  " + unitLevelProgress);
             if (i + 1 <= getProgress() / unitLevelProgress) {
                 // i + 1 == getProgress() / unitLevelProgress && getProgress() == unitLevelProgress * (getProgress() / unitLevelProgress ) 实现到达相应进度(非目标进度) 描述字变色(闪一下)
                 // i + 1 == getProgress() / unitLevelProgress 实现到达相应等级描数字点亮 直至到达下一等级
@@ -168,24 +168,28 @@ public class LevelProgressBar extends ProgressBar {
         mPaint.setShader(shader);
 
         /** progress为0时 渐变色会出现 初步认为是accurateStatr > reachedPartEnd 所以出现在负方向(但原因应该不是这个)
-        int accurateEnd = reachedPartEnd - progressHeight / 2;
+        int accurateEnd = reachedPartEnd - progressHeight / 2;    // 结尾端
         int accurateStart = progressHeight / 2;
-        if (accurateEnd > accurateStart) {
-            canvas.drawLine(accurateStart, lineY, reachedPartEnd, lineY, mPaint);
+        if (accurateEnd == mTotalWidth) {
+            Log.d("admin", "1" + " " + accurateStart + " " + reachedPartEnd + " " + accurateEnd);
+            canvas.drawLine(accurateStart, lineY, mTotalWidth - accurateStart, lineY, mPaint);
         } else {
-            canvas.drawLine(accurateStart, lineY, reachedPartEnd, lineY, mPaint);
+            Log.d("admin", "2" + " "+ accurateStart + " " + reachedPartEnd + " " + accurateEnd);
+            canvas.drawLine(accurateStart, lineY, reachedPartEnd + accurateStart, lineY, mPaint);
+
         }
          */
 
 //        /** myselfchange
-        if (reachedPartEnd>0) {
-            canvas.drawLine(progressHeight/2,lineY,reachedPartEnd,lineY,mPaint);
+        if (reachedPartEnd <= (mTotalWidth - progressHeight)) {
+            canvas.drawLine(progressHeight/2,lineY,reachedPartEnd + progressHeight/2,lineY,mPaint);
+        } else {
+            canvas.drawLine(progressHeight/2,lineY, mTotalWidth- progressHeight/2, lineY, mPaint);
         }
-        else if (reachedPartEnd>50)
-        {
-            canvas.drawLine(progressHeight/2, lineY, reachedPartEnd - progressHeight/2, lineY, mPaint);    // - progressHeight/2
-            // 当reachedParEnd小于progressHeight/2时会为负数
-        }
+//        else {
+//            canvas.drawLine(progressHeight/2, lineY, reachedPartEnd - progressHeight/2, lineY, mPaint);    // - progressHeight/2
+//             当reachedParEnd小于progressHeight/2时会为负数
+//        }
 //        */
         /** 原作者修改代码 但体验不够
         int accurateEnd = reachedPartEnd - progressHeight / 2;
